@@ -16,3 +16,4 @@
 .env
 /.idea
 /server/.idea
+/server/env.yml
