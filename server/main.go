@@ -3,6 +3,7 @@ package main
 import (
 	"gin-admin/config"
 	"gin-admin/db"
+	"gin-admin/initialize"
 	"gin-admin/router"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -10,6 +11,7 @@ import (
 
 func init() {
 	db.Initialize()
+	initialize.Initvalidate()
 }
 
 func main() {
