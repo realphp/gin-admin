@@ -3,9 +3,10 @@ package middleware
 import (
 	"errors"
 	"gin-admin/config"
+	"net/http"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 type UserClaim struct {
@@ -47,8 +48,9 @@ var (
 	TokenInvalid     error = errors.New("Couldn't handle this token:")
 )
 
-func ParseToken(tokenString string) (claim jwt.Claims, err error) {
-	token, err := jwt.Parse(tokenString, secret())
+func ParseToken(tokenString string) (claim *UserClaim, err error) {
+	// token, err := jwt.Parse(tokenString, secret())
+	token, err := jwt.ParseWithClaims(tokenString, &UserClaim{}, secret())
 	if err != nil {
 		if ve, ok := err.(*jwt.ValidationError); ok {
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
@@ -63,7 +65,7 @@ func ParseToken(tokenString string) (claim jwt.Claims, err error) {
 			}
 		}
 	}
-	claim = token.Claims
+	claim = token.Claims.(*UserClaim)
 	if token.Valid {
 		return claim, nil
 	}

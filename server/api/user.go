@@ -2,17 +2,16 @@ package api
 
 import (
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
+	"gin-admin/middleware"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
-
-
 
 func User(c *gin.Context) {
 	claims, _ := c.Get("claims")
-	waitUse := claims.(jwt.Claims)
-	fmt.Println(waitUse)
+	waitUse := claims.(*middleware.UserClaim)
+	fmt.Println(waitUse.Username)
 	c.JSON(http.StatusOK, gin.H{
 		"code": 0,
 		"msg":  "asdasd",
