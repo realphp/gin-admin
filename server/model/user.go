@@ -3,7 +3,7 @@ package model
 import "gin-admin/db"
 
 type User struct {
-	id       int
+	Id       int
 	Username string `json:"user_name" validate:"required"`
 	Password string `json:"password" validate:"required"`
 	NickName string `json:"nick_name"`

@@ -7,10 +7,11 @@ import (
 	"gin-admin/model"
 	"gin-admin/service"
 	"gin-admin/utils"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 )
 
 func Login(c *gin.Context) {
@@ -39,8 +40,6 @@ func Login(c *gin.Context) {
 	})
 }
 
-
-
 func CreateToken(c *gin.Context, user *model.User) string {
 	//自定义claim
 	//claim := jwt.MapClaims{
@@ -50,8 +49,9 @@ func CreateToken(c *gin.Context, user *model.User) string {
 	//	"iat":      time.Now().Unix(),
 	//}
 	claim := middleware.UserClaim{
-		NickName:    user.NickName,
-		Username:    user.Username,
+		Id:       user.Id,
+		NickName: user.NickName,
+		Username: user.Username,
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: int64(time.Now().Unix() - 1000),       // 签名生效时间
 			ExpiresAt: int64(time.Now().Unix() + 60*60*24*7), // 过期时间 一周
@@ -61,6 +61,3 @@ func CreateToken(c *gin.Context, user *model.User) string {
 	tokenString, _ := token.SignedString([]byte(config.ApplicationConfig.JwtSecret))
 	return tokenString
 }
-
-
-

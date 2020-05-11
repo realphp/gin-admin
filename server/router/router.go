@@ -12,6 +12,8 @@ func InitRouter() *gin.Engine {
 	r.Static("/static", "./static")
 	r.POST("/login", Login)
 	r.GET("/user", middleware.JWTAuth(), User)
+	r.GET("/user/list", ListUser)
 	r.POST("/user", AddUser)
+	r.POST("/user/edit", middleware.JWTAuth(), EditUser)
 	return r
 }
