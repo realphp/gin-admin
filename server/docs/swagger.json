@@ -17,9 +17,16 @@
                 "summary": "用户登录",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Offset",
-                        "name": "limit",
+                        "type": "string",
+                        "description": "用户名",
+                        "name": "user_name",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "密码",
+                        "name": "password",
                         "in": "query",
                         "required": true
                     }

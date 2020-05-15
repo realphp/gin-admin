@@ -15,7 +15,10 @@ import (
 
 // @Tags User
 // @Summary 用户登录
-// @Param   limit      query    int     true        "Offset"
+// accept	json
+// produce	json
+// @Param   user_name      query    string     true        "用户名"
+// @Param   password      query    string     true        "密码"
 // @Success 200 {string} string	"ok"
 // @Router /login/ [post]
 func Login(c *gin.Context) {

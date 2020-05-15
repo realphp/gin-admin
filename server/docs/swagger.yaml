@@ -9,11 +9,16 @@ paths:
   /login/:
     post:
       parameters:
-      - description: Offset
+      - description: 用户名
         in: query
-        name: limit
+        name: user_name
         required: true
-        type: integer
+        type: string
+      - description: 密码
+        in: query
+        name: password
+        required: true
+        type: string
       responses:
         "200":
           description: ok
