@@ -2,7 +2,6 @@ package api
 
 import (
 	"fmt"
-	"gin-admin/initialize"
 	"gin-admin/middleware"
 	"gin-admin/model"
 	"gin-admin/service"
@@ -26,9 +25,10 @@ func AddUser(c *gin.Context) {
 	var user model.User
 	var err error
 	err = c.ShouldBindJSON(&user)
-	err = initialize.Validate.Struct(user)
+	utils.Initvalidate()
+	err = utils.Validate.Struct(user)
 	if err != nil {
-		initialize.HandleError(err, c)
+		utils.HandleError(err, c)
 		return
 	}
 	err = service.AddUser(user)
@@ -69,7 +69,6 @@ func EditUser(c *gin.Context) {
 
 func ListUser(c *gin.Context) {
 	var pageInfo utils.PageInfo
-	// data := make(map[string]interface{})
 
 	err := c.ShouldBindQuery(&pageInfo)
 	fmt.Println(err, pageInfo)

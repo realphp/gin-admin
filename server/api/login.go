@@ -2,7 +2,6 @@ package api
 
 import (
 	"gin-admin/config"
-	"gin-admin/initialize"
 	"gin-admin/middleware"
 	"gin-admin/model"
 	"gin-admin/service"
@@ -19,9 +18,10 @@ func Login(c *gin.Context) {
 	var user2 model.User
 	var err error
 	err = c.ShouldBindJSON(&user)
-	err = initialize.Validate.Struct(user)
+	utils.Initvalidate()
+	err = utils.Validate.Struct(user)
 	if err != nil {
-		initialize.HandleError(err, c)
+		utils.HandleError(err, c)
 		return
 	}
 	user2, err = service.GetUserByName(user.Username)
