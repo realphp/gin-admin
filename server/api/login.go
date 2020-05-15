@@ -13,6 +13,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Tags User
+// @Summary 用户登录
+// @Param   limit      query    int     true        "Offset"
+// @Success 200 {string} string	"ok"
+// @Router /login/ [post]
 func Login(c *gin.Context) {
 	var user model.User
 	var user2 model.User
