@@ -18,7 +18,7 @@ type UserClaim struct {
 
 func JWTAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.Request.Header.Get("token")
+		token := c.Request.Header.Get("Authorization")
 		if token == "" {
 			c.JSON(http.StatusOK, gin.H{
 				"code": 0,

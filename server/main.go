@@ -19,7 +19,7 @@ func init() {
 // @description This is a sample Server pets
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
-// @name token
+// @name Authorization
 // @BasePath /
 func main() {
 	gin.SetMode(gin.DebugMode)

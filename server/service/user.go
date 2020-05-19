@@ -38,3 +38,4 @@ func ListUser(info utils.PageInfo) (err error, list []model.User, total int) {
 	}
 	return
 }
+

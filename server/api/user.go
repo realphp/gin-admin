@@ -11,13 +11,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Tags User
+// @Summary 用户信息
+// accept	json
+// produce	json
+// @Success 200 {string} string	"ok"
+// @Router /user/ [get]
 func User(c *gin.Context) {
 	claims, _ := c.Get("claims")
 	waitUse := claims.(*middleware.UserClaim)
 	fmt.Println(waitUse.Username)
 	c.JSON(http.StatusOK, gin.H{
-		"code": 0,
-		"msg":  "asdasd",
+		"code": 200,
+		"data": waitUse,
 	})
 }
 

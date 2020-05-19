@@ -27,9 +27,19 @@ paths:
       summary: 用户登录
       tags:
       - User
+  /user/:
+    get:
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 用户信息
+      tags:
+      - User
 securityDefinitions:
   ApiKeyAuth:
     in: header
-    name: token
+    name: Authorization
     type: apiKey
 swagger: "2.0"

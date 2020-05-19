@@ -41,14 +41,18 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
-	token := CreateToken(c, &user2)
+	token, ExpiresAt := CreateToken(c, &user2)
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
-		"data": token,
+		"data": gin.H{
+			"token":      token,
+			"user":       user2,
+			"expires_at": ExpiresAt,
+		},
 	})
 }
 
-func CreateToken(c *gin.Context, user *model.User) string {
+func CreateToken(c *gin.Context, user *model.User) (string, int64) {
 	//自定义claim
 	//claim := jwt.MapClaims{
 	//	"nickname": user.NickName,
@@ -67,5 +71,5 @@ func CreateToken(c *gin.Context, user *model.User) string {
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
 	tokenString, _ := token.SignedString([]byte(config.ApplicationConfig.JwtSecret))
-	return tokenString
+	return tokenString, claim.StandardClaims.ExpiresAt
 }

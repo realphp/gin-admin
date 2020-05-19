@@ -40,12 +40,28 @@
                     }
                 }
             }
+        },
+        "/user/": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "用户信息",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "securityDefinitions": {
         "ApiKeyAuth": {
             "type": "apiKey",
-            "name": "token",
+            "name": "Authorization",
             "in": "header"
         }
     }

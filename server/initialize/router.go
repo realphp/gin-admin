@@ -1,6 +1,7 @@
 package initialize
 
 import (
+	"gin-admin/middleware"
 	"gin-admin/router"
 
 	_ "gin-admin/docs"
@@ -12,6 +13,7 @@ import (
 
 func Routers() *gin.Engine {
 	r := gin.Default()
+	r.Use(middleware.Cors())
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	ApiGroup := r.Group("")
 	router.InitBaseRouter(ApiGroup)
