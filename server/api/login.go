@@ -54,16 +54,11 @@ func Login(c *gin.Context) {
 
 func CreateToken(c *gin.Context, user *model.User) (string, int64) {
 	//自定义claim
-	//claim := jwt.MapClaims{
-	//	"nickname": user.NickName,
-	//	"username": user.Username,
-	//	"nbf":      time.Now().Unix(),
-	//	"iat":      time.Now().Unix(),
-	//}
 	claim := middleware.UserClaim{
 		Id:       user.Id,
 		NickName: user.NickName,
 		Username: user.Username,
+		RoleId:   user.RoleId,
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: int64(time.Now().Unix() - 1000),       // 签名生效时间
 			ExpiresAt: int64(time.Now().Unix() + 60*60*24*7), // 过期时间 一周

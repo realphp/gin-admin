@@ -12,7 +12,8 @@ import (
 type UserClaim struct {
 	Id                 int
 	Username           string `json:"username"`
-	NickName           string `json:"NickName"`
+	NickName           string `json:"nick_name"`
+	RoleId             string `json:"role_id"`
 	jwt.StandardClaims        //嵌套了这个结构体就实现了Claim接口
 }
 

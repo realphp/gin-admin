@@ -8,15 +8,14 @@ type User struct {
 	Password string `json:"password" validate:"required"`
 	NickName string `json:"nick_name"`
 	Phone    string `json:"phone"`
+	RoleId   string `json:"role_id"`
 }
 
-var table = "ga_user"
-
 func (User) TableName() string {
-	return "ga_user"
+	return "ga_users"
 }
 
 func (u *User) GetUserByName() (user User, err error) {
-	err = db.Orm.Where("username=?", u.Username).First(&user).Error
+	err = db.Orm.Where("user_name=?", u.Username).First(&user).Error
 	return
 }

@@ -3,10 +3,11 @@ package db
 import (
 	"fmt"
 	"gin-admin/config"
-	_ "github.com/go-sql-driver/mysql" //加载mysql
-	"github.com/jinzhu/gorm"
 	"log"
 	"strconv"
+
+	_ "github.com/go-sql-driver/mysql" //加载mysql
+	"github.com/jinzhu/gorm"
 )
 
 var Orm *gorm.DB
@@ -23,7 +24,7 @@ func Initialize() {
 		fmt.Println("db type unknow")
 	}
 	var err error
-	Orm, err = gorm.Open("mysql", username+":"+password+"@tcp("+host+":"+port+")/"+database)
+	Orm, err = gorm.Open("mysql", username+":"+password+"@tcp("+host+":"+port+")/"+database+"?charset=utf8&parseTime=true")
 	Orm.LogMode(true)
 	if err != nil {
 		log.Fatalln("%s connect error %v", dbType, err)

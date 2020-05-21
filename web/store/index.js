@@ -1,6 +1,6 @@
 
 export const state = () => ({
-    user: {},
+    userInfo: {},
     isLogin: false,
 })
 
@@ -22,10 +22,10 @@ export const actions = {
 export const mutations = {
     userStatus(state, user) {
         if (user) {
-            state.user = user
+            state.userInfo = user
             state.isLogin = true
         } else {
-            state.user = {}
+            state.userInfo = {}
             state.isLogin = false
         }
     },

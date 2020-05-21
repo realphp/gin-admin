@@ -43,6 +43,7 @@
 import { nameValid, passwordValid } from "@/utils/validate.js";
 export default {
   name: "Login",
+  layout:"blank",
   data() {
     return {
       // 表单数据绑定对象

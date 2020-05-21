@@ -8,12 +8,12 @@ import (
 )
 
 func GetUserByName(name string) (user model.User, err error) {
-	err = db.Orm.Where("username=?", name).First(&user).Error
+	err = db.Orm.Where("user_name=?", name).First(&user).Error
 	return
 }
 
 func AddUser(user model.User) error {
-	notRegister := db.Orm.Where("username = ?", user.Username).First(&user).RecordNotFound()
+	notRegister := db.Orm.Where("user_name = ?", user.Username).First(&user).RecordNotFound()
 	if !notRegister {
 		return errors.New("用户名已注册")
 	}
@@ -38,4 +38,3 @@ func ListUser(info utils.PageInfo) (err error, list []model.User, total int) {
 	}
 	return
 }
-
