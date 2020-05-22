@@ -5,7 +5,7 @@ import "time"
 type Menu struct {
 	ID        uint   `gorm:"primary_key"`
 	MenuLevel uint   `json:"-"`
-	ParentId  string `json:"parentId"`
+	ParentId  uint   `json:"parentId"`
 	Path      string `json:"path"`
 	Name      string `json:"name"`
 	Hidden    bool   `json:"hidden"`

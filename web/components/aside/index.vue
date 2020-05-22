@@ -37,7 +37,7 @@ export default {
     ...mapMutations("history", ["addHistory"]),
     selectMenuItem(index) {
       if (index === this.$route.name) return;
-      this.$router.push({ name: index });
+      this.$router.push(index);
     }
   },
   computed: {

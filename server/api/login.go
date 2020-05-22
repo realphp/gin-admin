@@ -32,7 +32,7 @@ func Login(c *gin.Context) {
 		utils.HandleError(err, c)
 		return
 	}
-	user2, err = service.GetUserByName(user.Username)
+	user2, err = service.GetUserByName(user.UserName)
 
 	if user2.Password != utils.MD5([]byte(user.Password)) {
 		c.JSON(http.StatusOK, gin.H{
@@ -57,7 +57,7 @@ func CreateToken(c *gin.Context, user *model.User) (string, int64) {
 	claim := middleware.UserClaim{
 		Id:       user.Id,
 		NickName: user.NickName,
-		Username: user.Username,
+		Username: user.UserName,
 		RoleId:   user.RoleId,
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: int64(time.Now().Unix() - 1000),       // 签名生效时间

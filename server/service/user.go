@@ -13,7 +13,7 @@ func GetUserByName(name string) (user model.User, err error) {
 }
 
 func AddUser(user model.User) error {
-	notRegister := db.Orm.Where("user_name = ?", user.Username).First(&user).RecordNotFound()
+	notRegister := db.Orm.Where("user_name = ?", user.UserName).First(&user).RecordNotFound()
 	if !notRegister {
 		return errors.New("用户名已注册")
 	}

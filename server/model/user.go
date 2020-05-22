@@ -4,7 +4,7 @@ import "gin-admin/db"
 
 type User struct {
 	Id       int
-	Username string `json:"user_name" validate:"required"`
+	UserName string `json:"user_name" validate:"required"`
 	Password string `json:"password" validate:"required"`
 	NickName string `json:"nick_name"`
 	Phone    string `json:"phone"`
@@ -16,6 +16,6 @@ func (User) TableName() string {
 }
 
 func (u *User) GetUserByName() (user User, err error) {
-	err = db.Orm.Where("user_name=?", u.Username).First(&user).Error
+	err = db.Orm.Where("user_name=?", u.UserName).First(&user).Error
 	return
 }
