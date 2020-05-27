@@ -27,9 +27,9 @@ export const actions = {
     // 从后台获取动态路由
     async SetAsyncRouter({ commit }) {
         const baseRouter = [{
-            path: '/layout',
+            path: '/index2',
             name: 'layout',
-            component: "view/layout/index.vue",
+            component: "/1",
             meta: {
                 title: "底层layout"
             },
@@ -39,15 +39,15 @@ export const actions = {
         const asyncRouter = asyncRouterRes.data.Menus
         formatRouter(asyncRouter)
 
-        asyncRouter.push({
-            path: "404",
-            name: "404",
-            hidden: true,
-            meta: {
-                title: "迷路了*。*",
-            },
-            component: 'view/error/index.vue'
-        })
+        // asyncRouter.push({
+        //     path: "404",
+        //     name: "404",
+        //     hidden: true,
+        //     meta: {
+        //         title: "迷路了*。*",
+        //     },
+        //     component: 'view/error/index.vue'
+        // })
         baseRouter[0].children = asyncRouter
         // baseRouter.push({
         //     path: '*',

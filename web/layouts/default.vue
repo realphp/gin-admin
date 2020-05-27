@@ -26,8 +26,8 @@
               <div class="fl-right right-box">
                 <el-dropdown>
                   <span class="el-dropdown-link">
-                    <img src height="30" width="30" />
-                    userInfo.title
+                    <img src="/images/default.jpg" height="30" width="30" />
+                    {{userInfo.nick_name}}
                     <i class="el-icon-arrow-down"></i>
                   </span>
                   <el-dropdown-menu class="dropdown-group" slot="dropdown">
@@ -165,7 +165,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("user", ["userInfo"]),
+    ...mapGetters(["userInfo"]),
     ...mapGetters("history", ["historys", "activeValue"]),
     title() {
       return this.$route.meta.title || "当前页面";
@@ -218,8 +218,16 @@ export default {
 </script>
 
 <style lang="scss">
+// 引入初始化样式
+@import '@/assets/style/main.scss';
+@import '@/assets/style/base.scss';
 $headerHigh: 52px;
 $mainHight: 100vh;
+#app {
+  background: #eee;
+  height: 100vh;
+  overflow: hidden;
+}
 .el-dropdown-link {
   cursor: pointer;
 }
@@ -245,8 +253,7 @@ $mainHight: 100vh;
     vertical-align: middle;
     img {
       vertical-align: middle;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 30px;
     }
   }
   .menu-contorl {

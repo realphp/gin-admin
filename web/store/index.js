@@ -31,3 +31,11 @@ export const mutations = {
     },
 
 }
+
+
+export const getters = {
+    userInfo(state) {
+        return state.userInfo
+    },
+
+}

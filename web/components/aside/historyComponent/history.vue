@@ -55,8 +55,9 @@ export default {
         }
       }
     ]
-    this.historys =
-      JSON.parse(sessionStorage.getItem('historys')) || initHistorys
+      if (process.browser) {
+    this.historys = JSON.parse(sessionStorage.getItem('historys')) || initHistorys
+      }
     this.setTab(this.$route)
   },
 
