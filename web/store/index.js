@@ -9,6 +9,9 @@ export const actions = {
     setUser({ commit }, res) {
         commit('userStatus', res.data)
     },
+    LoginOut({ commit }) {
+        commit("LoginOut")
+    },
 
     async nuxtServerInit({ commit }, { app }) {
         if (app.$cookies.get('token')) {
@@ -28,6 +31,13 @@ export const mutations = {
             state.userInfo = {}
             state.isLogin = false
         }
+    },
+    LoginOut(state) {
+        state.userInfo = {}
+        state.isLogin = false
+        this.$cookies.set("token", '');
+        sessionStorage.clear()
+        window.location.reload()
     },
 
 }

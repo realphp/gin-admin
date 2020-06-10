@@ -176,7 +176,6 @@ export default {
     .footer {
       position: relative;
       width: 100%;
-      padding: 0 20px;
       margin: 40px 0 10px;
       text-align: center;
       .links {

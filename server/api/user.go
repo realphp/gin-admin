@@ -46,7 +46,7 @@ func AddUser(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"code": 0,
+		"code": 200,
 		"msg":  "创建成功",
 	})
 

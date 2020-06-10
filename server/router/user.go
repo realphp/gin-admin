@@ -12,7 +12,7 @@ func InitUserRouter(Router *gin.RouterGroup) {
 	{
 		UserRouter.GET("/info", middleware.JWTAuth(), User)
 		UserRouter.GET("/list", ListUser)
-		UserRouter.POST("/", AddUser)
+		UserRouter.POST("/add", AddUser)
 		UserRouter.POST("/edit", middleware.JWTAuth(), EditUser)
 	}
 }

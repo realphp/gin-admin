@@ -39,7 +39,7 @@
                     </el-dropdown-item>
                     <el-dropdown-item @click.native="showPassword=true" icon="el-icon-s-custom">修改密码</el-dropdown-item>
                     <el-dropdown-item @click.native="toPerson" icon="el-icon-s-custom">个人信息</el-dropdown-item>
-                    <el-dropdown-item @click.native="LoginOut" icon="el-icon-table-lamp">登 出</el-dropdown-item>
+                    <el-dropdown-item @click.native="LoginOut" icon="el-icon-table-lamp">退 出</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
@@ -124,7 +124,7 @@ export default {
     HistoryComponent
   },
   methods: {
-    ...mapActions("user", ["LoginOut"]),
+    ...mapActions(["LoginOut"]),
     totalCollapse() {
       this.isCollapse = !this.isCollapse;
       this.isSider = !this.isCollapse;
