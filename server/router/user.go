@@ -10,9 +10,10 @@ import (
 func InitUserRouter(Router *gin.RouterGroup) {
 	UserRouter := Router.Group("user").Use(middleware.JWTAuth())
 	{
-		UserRouter.GET("/info", middleware.JWTAuth(), User)
+		UserRouter.GET("/info", User)
 		UserRouter.GET("/list", ListUser)
 		UserRouter.POST("/add", AddUser)
-		UserRouter.POST("/edit", middleware.JWTAuth(), EditUser)
+		UserRouter.POST("/edit", EditUser)
+		UserRouter.POST("/delete", DeleteUser)
 	}
 }

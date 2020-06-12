@@ -6,7 +6,7 @@ import (
 	"gin-admin/model"
 	"gin-admin/service"
 	"gin-admin/utils"
-	"net/http"
+	"gin-admin/utils/response"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -35,21 +35,16 @@ func Login(c *gin.Context) {
 	user2, err = service.GetUserByName(user.UserName)
 
 	if user2.Password != utils.MD5([]byte(user.Password)) {
-		c.JSON(http.StatusOK, gin.H{
-			"code": 0,
-			"msg":  "用户名或密码不对",
-		})
+		response.FailMessage("用户名或密码不对", c)
 		return
 	}
 	token, ExpiresAt := CreateToken(c, &user2)
-	c.JSON(http.StatusOK, gin.H{
-		"code": 200,
-		"data": gin.H{
-			"token":      token,
-			"user":       user2,
-			"expires_at": ExpiresAt,
-		},
-	})
+	response.OkData(gin.H{
+		"token":      token,
+		"user":       user2,
+		"expires_at": ExpiresAt,
+	}, c)
+
 }
 
 func CreateToken(c *gin.Context, user *model.User) (string, int64) {

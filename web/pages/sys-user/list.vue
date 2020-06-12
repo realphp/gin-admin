@@ -75,7 +75,9 @@ export default {
   data() {
     return {
       listApi: function() {
-        return this.$axios.get("/user/list",{params:{page:this.page,pageSize:this.pageSize}});
+        return this.$axios.get("/user/list", {
+          params: { page: this.page, pageSize: this.pageSize }
+        });
       },
       addUserDialog: false,
       userInfo: {
@@ -97,6 +99,13 @@ export default {
   methods: {
     addUser() {
       this.addUserDialog = true;
+    },
+    async deleteUser(row) {
+      const { data:res } = await this.$axios.post("/user/delete", { id: row.Id });
+      if (res.code == 200) {
+        this.getTableData();
+        row.visible = false;
+      }
     },
     async enterAddUserDialog() {
       this.$refs.userForm.validate(async valid => {

@@ -6,7 +6,7 @@ import (
 	"gin-admin/model"
 	"gin-admin/service"
 	"gin-admin/utils"
-	"net/http"
+	"gin-admin/utils/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,11 +20,7 @@ import (
 func User(c *gin.Context) {
 	claims, _ := c.Get("claims")
 	waitUse := claims.(*middleware.UserClaim)
-	fmt.Println(waitUse.Username)
-	c.JSON(http.StatusOK, gin.H{
-		"code": 200,
-		"data": waitUse,
-	})
+	response.OkData(waitUse, c)
 }
 
 func AddUser(c *gin.Context) {
@@ -39,16 +35,10 @@ func AddUser(c *gin.Context) {
 	}
 	err = service.AddUser(user)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"code": 0,
-			"msg":  err.Error(),
-		})
+		response.FailMessage(err.Error(), c)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"code": 200,
-		"msg":  "创建成功",
-	})
+	response.Ok(c)
 
 }
 
@@ -60,17 +50,26 @@ func EditUser(c *gin.Context) {
 	err = c.ShouldBindJSON(&user)
 	err = service.UpdateUser(User.Id, &user)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"code": 0,
-			"msg":  err.Error(),
-		})
+		response.FailMessage(err.Error(), c)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"code": 0,
-		"msg":  "修改成功",
-	})
+	response.Ok(c)
 
+}
+
+func DeleteUser(c *gin.Context) {
+	var user model.User
+	_ = c.ShouldBindJSON(&user)
+	if user.Id == 0 {
+		response.FailMessage("请求参数错误", c)
+		return
+	}
+	err := service.DeleteUser(&user)
+	if err != nil {
+		response.FailMessage(err.Error(), c)
+		return
+	}
+	response.Ok(c)
 }
 
 func ListUser(c *gin.Context) {
@@ -80,10 +79,7 @@ func ListUser(c *gin.Context) {
 	fmt.Println(err, pageInfo)
 	err, list, total := service.ListUser(pageInfo)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"code": 0,
-			"msg":  err.Error(),
-		})
+		response.FailMessage(err.Error(), c)
 		return
 	}
 	data := utils.PageResult{
@@ -92,8 +88,5 @@ func ListUser(c *gin.Context) {
 		Page:     pageInfo.Page,
 		PageSize: pageInfo.PageSize,
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"code": 0,
-		"data": data,
-	})
+	response.OkData(data, c)
 }

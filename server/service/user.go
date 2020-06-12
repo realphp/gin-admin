@@ -27,6 +27,11 @@ func UpdateUser(user_id int, user *model.User) (err error) {
 	return err
 }
 
+func DeleteUser(user *model.User) (err error) {
+	err = db.Orm.Delete(user).Error
+	return err
+}
+
 func ListUser(info utils.PageInfo) (err error, list []model.User, total int) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
