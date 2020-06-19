@@ -23,7 +23,7 @@ func AddUser(user model.User) error {
 }
 
 func UpdateUser(user_id int, user *model.User) (err error) {
-	err = db.Orm.Model(&user).Where("id=?", user_id).Update(&user).Error
+	err = db.Orm.Model(&user).Update(&user).Error
 	return err
 }
 
