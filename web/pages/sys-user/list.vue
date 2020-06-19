@@ -21,6 +21,7 @@
       </el-table-column>-->
       <el-table-column label="操作" min-width="150">
         <template slot-scope="scope">
+          <el-button type="text" size="small" @click="editUser(scope.row)">编辑</el-button>
           <el-popover placement="top" width="160" v-model="scope.row.visible">
             <p>确定要删除此用户吗</p>
             <div style="text-align: right; margin: 0">
@@ -43,21 +44,21 @@
       layout="total, sizes, prev, pager, next, jumper"
     ></el-pagination>
 
-    <el-dialog :visible.sync="addUserDialog" custom-class="user-dialog" title="新增用户">
+    <el-dialog :visible.sync="isDialogShow" custom-class="user-dialog" :title="dialogTitle">
       <el-form :rules="rules" ref="userForm" :model="userInfo">
-        <el-form-item label="用户名" label-width="80px" prop="username">
+        <el-form-item label="用户名" label-width="80px" prop="user_name">
           <el-input v-model="userInfo.user_name"></el-input>
         </el-form-item>
         <el-form-item label="密码" label-width="80px" prop="password">
           <el-input v-model="userInfo.password"></el-input>
         </el-form-item>
-        <el-form-item label="别名" label-width="80px" prop="nickName">
+        <el-form-item label="别名" label-width="80px" prop="nick_name">
           <el-input v-model="userInfo.nick_name"></el-input>
         </el-form-item>
       </el-form>
       <div class="dialog-footer" slot="footer">
-        <el-button @click="closeAddUserDialog">取 消</el-button>
-        <el-button @click="enterAddUserDialog" type="primary">确 定</el-button>
+        <el-button @click="closeDialog">取 消</el-button>
+        <el-button @click="enterDialog" type="primary">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -79,7 +80,8 @@ export default {
           params: { page: this.page, pageSize: this.pageSize }
         });
       },
-      addUserDialog: false,
+      isDialogShow: false,
+      dialogTitle: "新增用户",
       userInfo: {
         user_name: "",
         password: "",
@@ -97,33 +99,52 @@ export default {
     this.getTableData();
   },
   methods: {
+    openDialog(type) {
+      switch (type) {
+        case "add":
+          this.dialogTitle = "新增Api";
+          break;
+        case "edit":
+          this.dialogTitle = "编辑Api";
+          break;
+        default:
+          break;
+      }
+      this.actionType = type;
+      this.isDialogShow = true;
+    },
     addUser() {
-      this.addUserDialog = true;
+      this.openDialog("add");
+    },
+    editUser(row) {
+      this.userInfo = row;
+      this.openDialog("edit");
     },
     async deleteUser(row) {
-      const { data:res } = await this.$axios.post("/user/delete", { id: row.Id });
+      const { data: res } = await this.$axios.post("/user/delete", {
+        id: row.Id
+      });
       if (res.code == 200) {
         this.getTableData();
         row.visible = false;
       }
     },
-    async enterAddUserDialog() {
+    async enterDialog() {
       this.$refs.userForm.validate(async valid => {
+        console.log(this.userInfo)
         if (valid) {
-          const { data: res } = await this.$axios.post(
-            "user/add",
-            this.userInfo
-          );
+          let url = "user/" + this.actionType;
+          const { data: res } = await this.$axios.post(url, this.userInfo);
           if (res.code !== 200) return this.$message.error(res.msg);
-          this.$message.success("登录成功");
+          this.$message.success(res.msg);
           await this.getTableData();
-          this.closeAddUserDialog();
+          this.closeDialog();
         }
       });
     },
-    closeAddUserDialog() {
+    closeDialog() {
       this.$refs.userForm.resetFields();
-      this.addUserDialog = false;
+      this.isDialogShow = false;
     }
   }
 };

@@ -45,10 +45,12 @@ func AddUser(c *gin.Context) {
 func EditUser(c *gin.Context) {
 	var user model.User
 	var err error
-	claims, _ := c.Get("claims")
-	User := claims.(*middleware.UserClaim)
 	err = c.ShouldBindJSON(&user)
-	err = service.UpdateUser(User.Id, &user)
+	if user.Id == 0 {
+		response.FailMessage("请求参数错误", c)
+		return
+	}
+	err = service.UpdateUser(user.Id, &user)
 	if err != nil {
 		response.FailMessage(err.Error(), c)
 		return
