@@ -17,13 +17,13 @@ func AddUser(user model.User) error {
 	if !notRegister {
 		return errors.New("用户名已注册")
 	}
-	user.Password = utils.MD5([]byte(user.Password))
+	user.Password = utils.MD5([]byte(model.DEFAULT_PASSWORD))
 	err := db.Orm.Create(&user).Error
 	return err
 }
 
-func UpdateUser(user_id int, user *model.User) (err error) {
-	err = db.Orm.Model(&user).Update(&user).Error
+func UpdateUser(user *model.User) (err error) {
+	err = db.Orm.Model(&user).Omit("password").Update(&user).Error
 	return err
 }
 
@@ -32,14 +32,14 @@ func DeleteUser(user *model.User) (err error) {
 	return err
 }
 
-func ListUser(info utils.PageInfo) (err error, list []model.User, total int) {
+func ListUser(info utils.PageInfo) (err error, list []model.UserList, total int) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-	err = db.Orm.Find(&list).Count(&total).Error
+	err = db.Orm.Model(&model.User{}).Count(&total).Error
 	if err != nil {
 		return
 	} else {
-		err = db.Orm.Offset(offset).Limit(limit).Find(&list).Error
+		err = db.Orm.Table("ga_users").Offset(offset).Limit(limit).Find(&list).Error
 	}
 	return
 }

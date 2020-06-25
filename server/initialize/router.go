@@ -19,5 +19,6 @@ func Routers() *gin.Engine {
 	router.InitBaseRouter(ApiGroup)
 	router.InitUserRouter(ApiGroup)
 	router.InitMenuRouter(ApiGroup)
+	router.InitRoleRouter(ApiGroup)
 	return r
 }

@@ -1,18 +1,17 @@
 <template>
   <div>
     <div class="button-box clearflex">
-      <el-button @click="addUser" type="primary">新增用户</el-button>
+      <el-button @click="addUser" type="primary">新增角色</el-button>
     </div>
     <el-table :data="tableData" border stripe>
-      <el-table-column label="uuid" min-width="250" prop="Id"></el-table-column>
-      <el-table-column label="用户名" min-width="150" prop="user_name"></el-table-column>
-      <el-table-column label="昵称" min-width="150" prop="nick_name"></el-table-column>
-      <el-table-column label="联系方式" min-width="150" prop="phone"></el-table-column>
+      <el-table-column label="uuid" min-width="250" prop="role_name"></el-table-column>
+      <el-table-column label="角色名" min-width="150" prop="role_name"></el-table-column>
+      <el-table-column label="昵称" min-width="150" prop="parent_id"></el-table-column>
       <el-table-column label="操作" min-width="150">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="editUser(scope.row)">编辑</el-button>
           <el-popover placement="top" width="160" v-model="scope.row.visible">
-            <p>确定要删除此用户吗</p>
+            <p>确定要删除此角色吗</p>
             <div style="text-align: right; margin: 0">
               <el-button size="mini" type="text" @click="scope.row.visible = false">取消</el-button>
               <el-button type="primary" size="mini" @click="deleteUser(scope.row)">确定</el-button>
@@ -34,31 +33,14 @@
     ></el-pagination>
 
     <el-dialog :visible.sync="isDialogShow" custom-class="user-dialog" :title="dialogTitle">
-      <el-form :rules="rules" ref="userForm" :model="userInfo">
-        <el-form-item label="用户名" label-width="80px" prop="user_name">
-          <el-input v-model="userInfo.user_name"></el-input>
+      <el-form :rules="formRules" ref="userForm" :model="formData">
+        <el-form-item label="角色名" label-width="80px" prop="role_name">
+          <el-input v-model="formData.role_name"></el-input>
         </el-form-item>
-        <el-form-item label="昵称" label-width="80px" prop="nick_name">
-          <el-input v-model="userInfo.nick_name"></el-input>
+        <el-form-item label="密码" label-width="80px" prop="parent_id">
+          <el-input v-model="formData.parent_id"></el-input>
         </el-form-item>
-        <el-form-item label="联系方式" label-width="80px" prop="phone">
-          <el-input v-model="userInfo.phone"></el-input>
-        </el-form-item>
-        <el-form-item label="角色" label-width="80px" prop="role">
-          <template>
-            <el-select v-model="userInfo.role_id" placeholder="请选择">
-              <el-option
-                v-for="item in roles"
-                :key="item.roleId"
-                :label="item.role_name"
-                :value="item.roleId"
-              ></el-option>
-            </el-select>
-          </template>
-        </el-form-item>
-
       </el-form>
-
       <div class="dialog-footer" slot="footer">
         <el-button @click="closeDialog">取 消</el-button>
         <el-button @click="enterDialog" type="primary">确 定</el-button>
@@ -71,7 +53,7 @@
 <script>
 // 获取列表内容封装在mixins内部  getTableData方法 初始化已封装完成
 const path = process.env.VUE_APP_BASE_API;
-import { nameValid, mobileValid } from "@/utils/validate.js";
+import { nameValid, passwordValid } from "@/utils/validate.js";
 import infoList from "@/components/mixins/infoList";
 export default {
   name: "List",
@@ -79,33 +61,24 @@ export default {
   data() {
     return {
       listApi: function() {
-        return this.$axios.get("/user/list", {
+        return this.$axios.get("/role/list", {
           params: { page: this.page, pageSize: this.pageSize }
         });
       },
       isDialogShow: false,
-      dialogTitle: "新增用户",
-      userInfo: {
-        user_name: "",
-        phone: "",
-        nick_name: "",
-        role_id: ""
+      dialogTitle: "新增角色",
+      formData: {
+        role_name: "",
+        parent_id: ""
       },
-      roles: [],
-      rules: {
-        user_name: nameValid,
-        phone: mobileValid,
-        nick_name: nameValid
+      formRules: {
+        role_name: nameValid,
+        parent_id: passwordValid,
       }
     };
   },
   async created() {
     this.getTableData();
-    const { data: res } = await this.$axios.get("/role/list", {
-      params: { page: this.page, pageSize: this.pageSize }
-    });
-    this.roles = res.data.list;
-    console.log(res);
   },
   methods: {
     openDialog(type) {
@@ -126,12 +99,12 @@ export default {
       this.openDialog("add");
     },
     editUser(row) {
-      this.userInfo = row;
+      this.formData = row;
       this.openDialog("edit");
     },
     async deleteUser(row) {
-      const { data: res } = await this.$axios.post("/user/delete", {
-        id: row.Id
+      const { data: res } = await this.$axios.post("/role/delete", {
+        roleId: row.roleId
       });
       if (res.code == 200) {
         this.getTableData();
@@ -140,10 +113,9 @@ export default {
     },
     async enterDialog() {
       this.$refs.userForm.validate(async valid => {
-        console.log(this.userInfo);
         if (valid) {
-          let url = "user/" + this.actionType;
-          const { data: res } = await this.$axios.post(url, this.userInfo);
+          let url = "role/" + this.actionType;
+          const { data: res } = await this.$axios.post(url, this.formData);
           if (res.code !== 200) return this.$message.error(res.msg);
           this.$message.success(res.msg);
           await this.getTableData();

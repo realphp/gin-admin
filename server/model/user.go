@@ -2,13 +2,19 @@ package model
 
 import "gin-admin/db"
 
-type User struct {
+const DEFAULT_PASSWORD = "123456"
+
+type UserList struct {
 	Id       int
 	UserName string `json:"user_name" validate:"required"`
-	Password string `json:"password" validate:"required"`
 	NickName string `json:"nick_name"`
 	Phone    string `json:"phone"`
-	RoleId   string `json:"role_id"`
+	RoleId   int    `json:"role_id"`
+}
+
+type User struct {
+	UserList
+	Password string `json:"password"`
 }
 
 func (User) TableName() string {

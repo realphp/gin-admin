@@ -10,10 +10,10 @@ import (
 // @auth       qm      (2020/05/06 10:26)
 // @return     err             error
 // @return    menusMsp            map{string}[]SysBaseMenu
-func getMenuTreeMap(roleId string) (err error, treeMap map[uint][]model.RoleMenu) {
+func getMenuTreeMap(roleId int) (err error, treeMap map[uint][]model.RoleMenu) {
 	var allMenus []model.RoleMenu
 	treeMap = make(map[uint][]model.RoleMenu)
-	if roleId == "1" {
+	if roleId == 1 {
 		err = db.Orm.Table("ga_menus").Find(&allMenus).Error
 	} else {
 		err = db.Orm.Select("*").Joins("left join  ga_menus on ga_menus.id=ga_role_menus.menu_id").Where("role_id=?", roleId).Find(&allMenus).Error
@@ -30,7 +30,7 @@ func getMenuTreeMap(roleId string) (err error, treeMap map[uint][]model.RoleMenu
 // @param     authorityId     string
 // @return    err             error
 // @return    menus           []model.SysMenu
-func GetMenuTree(roleId string) (err error, menus []model.RoleMenu) {
+func GetMenuTree(roleId int) (err error, menus []model.RoleMenu) {
 	err, menuTree := getMenuTreeMap(roleId)
 	menus = menuTree[0]
 	for i := 0; i < len(menus); i++ {
