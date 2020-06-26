@@ -1,6 +1,8 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type Menu struct {
 	ID        uint   `gorm:"primary_key"`

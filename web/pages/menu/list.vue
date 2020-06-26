@@ -4,13 +4,7 @@
       <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd">新增</el-button>
     </el-row>
 
-    <el-table
-      :data="menus"
-      row-key="ID"
-      border
-      stripe
-      :tree-props="{children: 'children'}"
-    >
+    <el-table :data="menus" row-key="ID" border stripe :tree-props="{children: 'children'}">
       <el-table-column prop="meta.title" label="菜单名称" :show-overflow-tooltip="true" width="180px" />
       <el-table-column prop="meta.icon" label="图标" align="center" width="100px">
         <template slot-scope="scope">
@@ -29,7 +23,7 @@
       </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createdAt" width="180">
         <template slot-scope="scope">
-          <span>{{ scope.row.createdAt}}</span>
+          <span>{{ scope.row.CreatedAt|formatDate}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="180">
@@ -48,6 +42,7 @@
 </template>
  
 <script>
+import { formatTimeToStr } from "@/utils/date";
 export default {
   data() {
     return {
@@ -57,6 +52,16 @@ export default {
   async created() {
     const { data: res } = await this.$axios.post("/menu/list");
     this.menus = res.Menus;
+  },
+  filters: {
+    formatDate: function(time) {
+      if (time != null && time != "") {
+        var date = new Date(time);
+        return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
+      } else {
+        return "";
+      }
+    }
   },
   methods: {
     // 菜单显示状态字典翻译
