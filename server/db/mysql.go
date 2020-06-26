@@ -24,7 +24,7 @@ func Initialize() {
 		fmt.Println("db type unknow")
 	}
 	var err error
-	Orm, err = gorm.Open("mysql", username+":"+password+"@tcp("+host+":"+port+")/"+database+"?charset=utf8&parseTime=true")
+	Orm, err = gorm.Open("mysql", username+":"+password+"@tcp("+host+":"+port+")/"+database+"?charset=utf8&parseTime=True&loc=Local")
 	Orm.LogMode(true)
 	if err != nil {
 		log.Fatalln("%s connect error %v", dbType, err)

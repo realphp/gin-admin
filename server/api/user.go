@@ -50,7 +50,6 @@ func EditUser(c *gin.Context) {
 		response.FailMessage("请求参数错误", c)
 		return
 	}
-	fmt.Println(user)
 	err = service.UpdateUser(&user)
 	if err != nil {
 		response.FailMessage(err.Error(), c)
