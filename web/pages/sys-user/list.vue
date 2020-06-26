@@ -4,9 +4,10 @@
       <el-button @click="addUser" type="primary">新增用户</el-button>
     </div>
     <el-table :data="tableData" border stripe>
-      <el-table-column label="uuid" min-width="250" prop="Id"></el-table-column>
+      <el-table-column label="ID" min-width="100" prop="Id"></el-table-column>
       <el-table-column label="用户名" min-width="150" prop="user_name"></el-table-column>
       <el-table-column label="昵称" min-width="150" prop="nick_name"></el-table-column>
+      <el-table-column label="角色" min-width="150" prop="role_id" :formatter="roleFormat"></el-table-column>
       <el-table-column label="联系方式" min-width="150" prop="phone"></el-table-column>
       <el-table-column label="操作" min-width="150">
         <template slot-scope="scope">
@@ -56,7 +57,6 @@
             </el-select>
           </template>
         </el-form-item>
-
       </el-form>
 
       <div class="dialog-footer" slot="footer">
@@ -138,9 +138,21 @@ export default {
         row.visible = false;
       }
     },
+    // 初始化表单
+    initForm() {
+      if (this.$refs.userForm) {
+        this.$refs.userForm.resetFields();
+      }
+      this.userInfo = {
+        user_name: "",
+        phone: "",
+        nick_name: "",
+        role_id: ""
+      };
+    },
+    // 确定弹窗
     async enterDialog() {
       this.$refs.userForm.validate(async valid => {
-        console.log(this.userInfo);
         if (valid) {
           let url = "user/" + this.actionType;
           const { data: res } = await this.$axios.post(url, this.userInfo);
@@ -148,12 +160,22 @@ export default {
           this.$message.success(res.msg);
           await this.getTableData();
           this.closeDialog();
+          this.initForm();
         }
       });
     },
+    // 关闭窗口
     closeDialog() {
       this.$refs.userForm.resetFields();
+      this.initForm();
       this.isDialogShow = false;
+    },
+    roleFormat(row) {
+      for (let i = 0; i < this.roles.length; i++) {
+        if (row.role_id == this.roles[i].roleId) {
+          return this.roles[i].role_name;
+        }
+      }
     }
   }
 };

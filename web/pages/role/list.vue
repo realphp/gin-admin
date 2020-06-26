@@ -4,9 +4,8 @@
       <el-button @click="addUser" type="primary">新增角色</el-button>
     </div>
     <el-table :data="tableData" border stripe>
-      <el-table-column label="uuid" min-width="250" prop="role_name"></el-table-column>
+      <el-table-column label="ID" min-width="150" prop="roleId"></el-table-column>
       <el-table-column label="角色名" min-width="150" prop="role_name"></el-table-column>
-      <el-table-column label="昵称" min-width="150" prop="parent_id"></el-table-column>
       <el-table-column label="操作" min-width="150">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="editUser(scope.row)">编辑</el-button>
@@ -37,9 +36,6 @@
         <el-form-item label="角色名" label-width="80px" prop="role_name">
           <el-input v-model="formData.role_name"></el-input>
         </el-form-item>
-        <el-form-item label="密码" label-width="80px" prop="parent_id">
-          <el-input v-model="formData.parent_id"></el-input>
-        </el-form-item>
       </el-form>
       <div class="dialog-footer" slot="footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -69,11 +65,9 @@ export default {
       dialogTitle: "新增角色",
       formData: {
         role_name: "",
-        parent_id: ""
       },
       formRules: {
         role_name: nameValid,
-        parent_id: passwordValid,
       }
     };
   },
@@ -120,12 +114,23 @@ export default {
           this.$message.success(res.msg);
           await this.getTableData();
           this.closeDialog();
+          this.initForm();
         }
       });
     },
     closeDialog() {
       this.$refs.userForm.resetFields();
       this.isDialogShow = false;
+      this.initForm();
+    },
+    // 初始化表单
+    initForm() {
+      if (this.$refs.formData) {
+        this.$refs.formData.resetFields();
+      }
+      this.formData = {
+        role_name: "",
+      };
     }
   }
 };
