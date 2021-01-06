@@ -13,7 +13,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.10.3",
     "@nuxtjs/dotenv": "^1.4.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "cookie-universal-nuxt": "^2.1.3",
     "cross-env": "^5.2.0",
     "element-ui": "^2.4.11",
